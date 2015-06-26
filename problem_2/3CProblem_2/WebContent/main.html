@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+<title>3C Problem 2</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var account = {
+				    id: 123,
+				    name: "Sample Name",
+				    active: true,
+				    count: 1000,
+				    address_ids : [
+				        1,
+				        30,
+				        100,
+				        50
+				    ],
+				    accounts: [
+				        {
+				            id: 1,
+				            name: "Test Account 1"
+				        },
+				        {
+				            id: 2,
+				            name: "Test Account 2"
+				        }
+				    ]
+				};
+			
+			
+			var showResponse = function(resp){
+				$("#content").html(
+					"<div class='row'>"+
+						"<div class='col-md-2'><label class='label label-default'>ID:</label></div><div class='col-md-3'>"+resp.id+"</div><div class='col-md-7'></div>"+
+					"</div>"+
+					"<div class='row'>"+
+						"<div class='col-md-2'><label class='label label-default'>Name:</label></div><div class='col-md-3'>"+resp.name+"</div><div class='col-md-7'></div>"+
+					"</div>"+
+					"<div class='row'>"+
+						"<div class='col-md-2'><label class='label label-default'>Active:</label></div><div class='col-md-3'>"+resp.active+"</div><div class='col-md-7'></div>"+
+					"</div>"+
+					"<div class='row'>"+
+						"<div class='col-md-2'><label class='label label-default'>Count:</label></div><div class='col-md-3'>"+resp.count+"</div><div class='col-md-7'></div>"+
+					"</div>"+
+					"<div class='row'"+
+						"<div class='col-md-2'><label class='label label-default'>Address ID</label></div>"+
+					"</div>"
+				);
+				for(var i=0; i<resp.address_ids.length; i++){
+					$("#content").append(
+						"<div class='row'>"+
+							"<div class='col-md-2'>"+resp.address_ids[i]+"</div>"+
+						"</div>"
+					);
+				}
+				$("#content").append("<div class='row'><label class='label label-default'>Accounts</label></div>");
+				for(var account in resp.accounts){
+					var acc = resp.accounts[account];
+					$("#content").append(
+						"<div class='row'>"+
+							"<div class='col-md-2'><label class='label label-warning'>Id:</label></div><div class='col-md-2'>"+acc.id+"</div>"+
+						"</div>"+
+						"<div class='row'>"+
+							"<div class='col-md-2'><label class='label label-warning'>Name:</label></div><div class='col-md-2'>"+acc.name+"</div>"+
+						"</div>"
+					);
+				}
+			}
+			
+			$("#testBtn").click(function(e){
+				$.ajax({
+					url: "P2Servlet",
+					type: "POST",
+			        data: JSON.stringify(account),
+			        contentType: "application/json; charset=utf-8",
+					dataType: "json",
+					success : function(data){showResponse(data);}
+				});
+			});
+		});
+	
+	</script>
+</head>
+<body class="container" id="main">
+	<div class="row">
+		<h2><label class="label label-success text-center">3Channel Problem 2</label></h2>
+	</div>
+	<div class="row">
+		<div class="well well-small">
+			Challenge was to POST a JSON object to a server, process it and return to the page for rendering.
+		</div>
+	</div>
+	<div class="row" id="top">
+		<label class="btn btn-default" id="testBtn">Post</label>
+	</div>
+	<div class="container" id="content"></div>
+</body>
+</html>
